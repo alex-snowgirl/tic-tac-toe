@@ -8,4 +8,4 @@ To install:
 
 PS: Very simple implementation (minimum to work properly)
 If something - ask
-Thanks for this awesome trip in TicTacToe world
+Thanks for this awesome trip in TTT world
