@@ -1,0 +1,81 @@
+.game {
+    font-family: 'Raleway', sans-serif;
+    text-align: center;
+    margin: 25px auto;
+    min-width: 300px;
+    border-collapse: collapse;
+    border-style: hidden;
+}
+
+.game caption {
+    font-size: 2em;
+}
+
+.game .hint {
+    font-size: 14px
+}
+
+.game td,
+.game button {
+    cursor: pointer;
+}
+
+.game td {
+    width: 150px;
+    height: 150px;
+    text-align: center;
+    vertical-align: middle;
+    border: 4px solid black;
+}
+
+.game td.x,
+.game td.o {
+    background-position: center center;
+    background-repeat: no-repeat;
+}
+
+.game td.x {
+    background-image: url(cross.png);
+}
+
+.game td.o {
+    background-image: url(circle.png);
+}
+
+.game .loader {
+    background: url(loading.gif) center center no-repeat;
+    width: 32px;
+    height: 32px;
+    display: none;
+}
+
+.game .loader,
+.game .btn-start,
+.game .btn-refresh,
+.game .btn-finish,
+.game .hint,
+.game td {
+    display: none;
+}
+
+.game.preview .btn-start,
+.game.started .btn-finish,
+.game.loading .loader,
+.game.running .btn-refresh,
+.game.running .btn-finish,
+.game.finished .btn-start,
+.game.res-lost .btn-start,
+.game.res-won .btn-start,
+.game.res-draw .btn-start {
+    display: inline-block;
+}
+
+.game.grid td {
+    display: table-cell;
+}
+
+.game.res-draw .draw,
+.game.res-won .won,
+.game.res-lost .lost {
+    display: block;
+}
