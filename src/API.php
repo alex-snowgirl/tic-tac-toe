@@ -20,6 +20,7 @@ class API implements MoveInterface
 {
     public function __construct(array $request)
     {
+        //simple parsing & execution & output
         echo json_encode($this->{'action' . ucfirst($request['action'])}($request));
     }
 
@@ -50,15 +51,14 @@ class API implements MoveInterface
      */
     public function makeMove($boardState, $playerUnit = 'x')
     {
-        $game = new Game(
-            call_user_func_array('array_merge', $boardState),
-            Game::MARK_X == $playerUnit ? Game::MARK_O : Game::MARK_X
-        );
+        $game = new Game($boardState, $playerUnit);
 
         //replace (inject, pass etc.) with any other logic strategy
-        $newGame = (new MiniMax)->getNewGame($game);
+        $gameToNewGame = new MiniMax();
+        $newGame = $gameToNewGame->getNewGame($game);
 
         //replace (inject, pass etc.) with any other output strategy
-        return (new Point)->transfer($game, $newGame);
+        $gameToOutput = new Point();
+        return $gameToOutput->transfer($game, $newGame);
     }
 }

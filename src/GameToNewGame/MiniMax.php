@@ -14,6 +14,7 @@ use TIC_TAC_TOE\GameToNewGame;
  * Class MiniMax
  * @package TIC_TAC_TOE\GameToNewGame
  * @see https://medium.freecodecamp.org/how-to-make-your-tic-tac-toe-game-unbeatable-by-using-the-minimax-algorithm-9d690bad4b37
+ * @see https://github.com/andrewgph/TicTacToe-Players/tree/master/Php
  */
 class MiniMax extends GameToNewGame
 {
@@ -22,7 +23,7 @@ class MiniMax extends GameToNewGame
         $games = $this->getPossibleGames($game);
 
         $newGame = $games[0];
-        $min = 2;
+        $min = 1;
 
         foreach ($games as $game) {
             $v = $this->getMiniMaxValue($game);
@@ -44,7 +45,7 @@ class MiniMax extends GameToNewGame
             if (Game::MARK_EMPTY == $v) {
                 $tmp = $game->getBoard();
                 $tmp[$k] = $game->getPlayer();
-                $output[] = new Game($tmp, Game::MARK_O == $game->getPlayer() ? Game::MARK_X : Game::MARK_O);
+                $output[] = new Game($tmp, $game->getOpponent());
             }
         }
 

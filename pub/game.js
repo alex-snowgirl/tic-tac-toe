@@ -48,8 +48,6 @@ game.prototype.mark = function (ev) {
 
     $(ev.target).addClass(this.playerUnit);
 
-    console.log(this.getMatrix());
-
     if (this.isOver()) {
         this.showState();
     } else {
@@ -158,7 +156,7 @@ game.prototype.getWinner = function () {
 game.prototype.showState = function () {
     if (this.isOver()) {
         var winner = this.getWinner();
-        console.log(winner);
+
         if (1 == winner) {
             this.setState(game.STATE_RES_WON);
         } else if (-1 == winner) {

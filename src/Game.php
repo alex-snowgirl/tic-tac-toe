@@ -17,13 +17,32 @@ class Game
     const MARK_X = 'x';
     const MARK_O = 'o';
 
-    public $player;
     public $board;
+    public $opponent;
 
-    public function __construct(array $board, $player = self::MARK_X)
+    /**
+     * @param array[] $board
+     * @param string $opponent
+     */
+    public function __construct(array $board, $opponent = self::MARK_X)
     {
-        $this->board = $board;
-        $this->player = $player;
+        $this->setBoard($board);
+        $this->setOpponent($opponent);
+    }
+
+    /**
+     * @param array[] $board
+     * @return Game
+     */
+    public function setBoard(array $board) : Game
+    {
+        if (isset($board[0]) && is_array($board[0])) {
+            $this->board = call_user_func_array('array_merge', $board);
+        } else {
+            $this->board = $board;
+        }
+
+        return $this;
     }
 
     public function getBoard() : array
@@ -31,9 +50,20 @@ class Game
         return $this->board;
     }
 
+    public function setOpponent($opponent) : Game
+    {
+        $this->opponent = $opponent;
+        return $this;
+    }
+
+    public function getOpponent()
+    {
+        return $this->opponent;
+    }
+
     public function getPlayer()
     {
-        return $this->player;
+        return Game::MARK_X == $this->opponent ? Game::MARK_O : Game::MARK_X;
     }
 
     public function isOver() : bool
