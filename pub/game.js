@@ -1,12 +1,14 @@
-/**
- * Created by snowgirl on 12/5/17.
- */
+$.fn.game = function () {
+    return this.each(function (ix) {
+        new game(this, ix + 1);
+    });
+};
 
-var game = function (el) {
-    this.$element = $(el);
-    this.setCallbacks();
-    this.setState(game.STATE_PREVIEW);
-    this.setUnit(game.UNIT_X);
+var game = function (el, ix) {
+    this.setDom(el, ix || 1)
+        .setCallbacks()
+        .setState(game.STATE_PREVIEW)
+        .setUnit(game.UNIT_X);
 };
 
 game.UNIT_X = 'x';
@@ -20,52 +22,101 @@ game.STATE_RES_WON = 'grid res-won';
 game.STATE_RES_LOST = 'grid res-lost';
 game.STATE_RES_DRAW = 'grid res-draw';
 
+game.prototype.setDom = function (el, number) {
+    this.$element = $('<table id="game" class="game">\n' +
+        '    <caption>\n' +
+        '        <div>Tic Tac Toe #' + number + '</div>\n' +
+        '        <div class="loader on"></div>\n' +
+        '        <div class="hint won">You won! Congrats</div>\n' +
+        '        <div class="hint lost">You lost! Sorry</div>\n' +
+        '        <div class="hint draw">Draw! Lets play one more time</div>\n' +
+        '        <div class="hint make">Your turn</div>\n' +
+        '        <button class="btn-start">Start new game</button>\n' +
+        '        <button class="btn-refresh">Refresh</button>\n' +
+        '        <button class="btn-finish">Finish</button>\n' +
+        '    </caption>\n' +
+        '    <tbody>\n' +
+        '    <tr>\n' +
+        '        <td></td>\n' +
+        '        <td></td>\n' +
+        '        <td></td>\n' +
+        '    </tr>\n' +
+        '    <tr>\n' +
+        '        <td></td>\n' +
+        '        <td></td>\n' +
+        '        <td></td>\n' +
+        '    </tr>\n' +
+        '    <tr>\n' +
+        '        <td></td>\n' +
+        '        <td></td>\n' +
+        '        <td></td>\n' +
+        '    </tr>\n' +
+        '    </tbody>\n' +
+        '</table>');
+
+    $(el).append(this.$element);
+
+    return this;
+};
+
 game.prototype.setCallbacks = function () {
     this.$element
         .on('click', '.btn-start', $.proxy(this.start, this))
         .on('click', 'td', $.proxy(this.mark, this))
         .on('click', '.btn-refresh', $.proxy(this.refresh, this))
         .on('click', '.btn-finish', $.proxy(this.finish, this));
+
+    return this;
 };
 
 game.prototype.setState = function (state) {
     this.state = state;
     this.$element.removeClass().addClass(['game', state].join(' '));
+
+    return this;
 };
 
 game.prototype.setUnit = function (playerUnit) {
     this.playerUnit = playerUnit;
+
+    return this;
 };
 
 game.prototype.start = function (ev) {
     this.clear();
     this.setState(game.STATE_STARTED);
 };
+
 game.prototype.mark = function (ev) {
-    if (game.STATE_LOADING == this.state) {
+    if (game.STATE_LOADING === this.state) {
+        return false;
+    }
+
+    if (this.isOver()) {
         return false;
     }
 
     $(ev.target).addClass(this.playerUnit);
 
     if (this.isOver()) {
-        this.showState();
-    } else {
-        this.setState(game.STATE_LOADING);
-
-        setTimeout($.proxy(function () {
-            this.makeRequest('move', 'post', {board: this.getMatrix(), player: this.playerUnit})
-                .done($.proxy(function (data) {
-                    //@todo validate
-                    this.setState(game.STATE_RUNNING);
-                    this.$element.find('tr:eq(' + data[1] + ')').find('td:eq(' + data[0] + ')').addClass(data[2]);
-                    this.showState();
-                }, this));
-        }, this), 1);
+        return this.showState();
     }
+
+    this.setState(game.STATE_LOADING);
+
+    setTimeout($.proxy(function () {
+        this.makeRequest('move', 'post', {board: this.getMatrix(), player: this.playerUnit})
+            .done($.proxy(function (data) {
+                //@todo validate
+                this.setState(game.STATE_RUNNING);
+                this.$element.find('tr:eq(' + data[1] + ')').find('td:eq(' + data[0] + ')').addClass(data[2]);
+                this.showState();
+            }, this));
+    }, this), 1);
 
     return true;
 };
+
 game.prototype.getMatrix = function () {
     var matrix = [];
 
@@ -167,4 +218,6 @@ game.prototype.showState = function () {
     } else {
         this.setState(game.STATE_RUNNING);
     }
+
+    return true;
 };

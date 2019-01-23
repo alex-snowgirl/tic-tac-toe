@@ -12,7 +12,8 @@
 }
 
 .game .hint {
-    font-size: 14px
+    font-size: 14px;
+    font-weight: bold;
 }
 
 .game td,
@@ -40,6 +41,11 @@
 
 .game td.o {
     background-image: url(circle.png);
+}
+
+.game.loading,
+.game.loading * {
+    cursor: wait;
 }
 
 .game .loader {

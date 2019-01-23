@@ -3,46 +3,22 @@
 <head>
     <meta charset="UTF-8">
     <title>Tic Tac Toe</title>
+
     <link href="https://fonts.googleapis.com/css?family=Raleway" rel="stylesheet">
     <link rel="stylesheet" href="game.css">
+    <link rel="stylesheet" href="styles.css">
 </head>
-<body>
-<table id="game" class="game">
-    <caption>
-        Tic Tac Toe
-        <br/>
-        <span class="loader on"></span>
-        <div class="hint won">You won! Congrats</div>
-        <div class="hint lost">You lost! Sorry</div>
-        <div class="hint draw">Draw! Lets play one more time</div>
-        <div class="hint make">Your turn</div>
-        <button class="btn-start">Start</button>
-        <button class="btn-refresh">Refresh</button>
-        <button class="btn-finish">Finish</button>
-    </caption>
-    <tbody>
-    <tr>
-        <td></td>
-        <td></td>
-        <td></td>
-    </tr>
-    <tr>
-        <td></td>
-        <td></td>
-        <td></td>
-    </tr>
-    <tr>
-        <td></td>
-        <td></td>
-        <td></td>
-    </tr>
-    </tbody>
-</table>
+<body class="container-grid">
+
+<div class="container"></div>
+<div class="container"></div>
+<div class="container"></div>
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 <script src="game.js"></script>
+
 <script type="text/javascript">
-    new game(document.getElementById('game'));
+    $('.container').game();
 </script>
 </body>
 </html>
