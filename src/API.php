@@ -5,10 +5,12 @@
  * Date: 12/5/17
  * Time: 7:27 PM
  */
+
 namespace TIC_TAC_TOE;
 
 use TIC_TAC_TOE\GameToNewGame\MiniMax;
 use TIC_TAC_TOE\GameToOutput\Point;
+use TIC_TAC_TOE\InputToGame\SquareBoard;
 
 /**
  * Very simple API class (all in one)
@@ -20,14 +22,26 @@ class API implements MoveInterface
 {
     public function __construct(array $request)
     {
+        if (!isset($request['action'])) {
+            //@todo implement
+            throw new BadRequestException();
+        }
+
+        $action = 'action' . ucfirst($request['action']);
+
+        if (!method_exists($this, $action)) {
+            //@todo implement
+            throw new NotFoundException();
+        }
+
         //simple parsing & execution & output
-        echo json_encode($this->{'action' . ucfirst($request['action'])}($request));
+        echo json_encode($this->{$action}($request));
     }
 
     public function actionMove(array $request)
     {
-        sleep(1);
-        return $this->makeMove($request['board'], $request['player']);
+//        sleep(1);
+        return $this->makeMove($request['board'] ?? null, $request['player'] ?? null);
     }
 
     /**
@@ -51,7 +65,11 @@ class API implements MoveInterface
      */
     public function makeMove($boardState, $playerUnit = 'x')
     {
-        $game = new Game($boardState, $playerUnit);
+        //replace (inject, pass etc.) with any other input strategy
+        $inputToGame = new SquareBoard();
+        $game = $inputToGame->getGame($boardState);
+
+        $game->setPlayer($playerUnit);
 
         //replace (inject, pass etc.) with any other logic strategy
         $gameToNewGame = new MiniMax();
