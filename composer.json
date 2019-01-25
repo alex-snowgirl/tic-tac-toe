@@ -11,5 +11,7 @@
       "email": "alex.snowgirl@gmail.com"
     }
   ],
-  "require": {}
+  "require": {
+    "phpunit/phpunit": "^7.5"
+  }
 }
