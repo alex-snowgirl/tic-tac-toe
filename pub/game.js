@@ -82,6 +82,10 @@ game.prototype.setUnit = function (playerUnit) {
     return this;
 };
 
+game.prototype.getOpponentUnit = function () {
+    return game.UNIT_X === this.playerUnit ? game.UNIT_O : game.UNIT_X;
+};
+
 game.prototype.start = function (ev) {
     this.clear();
     this.setState(game.STATE_STARTED);
@@ -105,7 +109,7 @@ game.prototype.mark = function (ev) {
     this.setState(game.STATE_LOADING);
 
     setTimeout($.proxy(function () {
-        this.makeRequest('move', 'post', {board: this.getMatrix(), player: this.playerUnit})
+        this.makeRequest('move', 'post', {board: this.getMatrix(), player: this.getOpponentUnit()})
             .done($.proxy(function (data) {
                 //@todo validate
                 this.setState(game.STATE_RUNNING);
