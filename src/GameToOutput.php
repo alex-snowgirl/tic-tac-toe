@@ -5,6 +5,7 @@
  * Date: 12/6/17
  * Time: 7:54 PM
  */
+
 namespace TIC_TAC_TOE;
 
 /**
@@ -15,5 +16,5 @@ namespace TIC_TAC_TOE;
  */
 abstract class GameToOutput
 {
-    abstract public function transfer(Game $prevGame, Game $newGame) : array;
+    abstract public function transfer(Game $prevGame, Game $newGame, int $side = 3): array;
 }

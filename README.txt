@@ -14,6 +14,7 @@ To install:
 3) cd pub/
 4) php -S localhost:8000
 5) in browser - http://localhost:8000
+6) to run tests: php vendor/bin/phpunit tests
 
 PS: Very simple implementation (minimum to work properly)
 If something - ask
